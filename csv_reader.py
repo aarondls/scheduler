@@ -1,7 +1,7 @@
 import csv
 import pprint
 
-filepath = "/Users/aarondelossantos/Desktop/Course Syllabus and Schedule/Week 21.csv"
+filepath = "/Users/aarondelossantos/Desktop/Course Syllabus and Schedule/Full Schedule.csv"
 possibleSchedTypes = ("A", "B", "C", "D", "E", "F", "G")
 
 def extractData(filepath):
@@ -12,21 +12,15 @@ def extractData(filepath):
     nestedDict = {}
     print("preparing nested dict")
 
+    for schedType in possibleSchedTypes:
+        nestedDict[schedType] = {}
+
     for counter, row in enumerate(csvReader):
-        nestedDict[counter] = dict(row)
+        counter = len(nestedDict[dict(row)["Schedule type"]])
+        nestedDict[dict(row)["Schedule type"]][counter] = dict(row)
 
     return nestedDict
 
-def findScheduleType(scheduleType, dataSource):
-    print("Finding schedule type")
-    siftedDict = {}
-    for key in dataSource:
-        if dataSource[key]["Schedule type"] == scheduleType:
-            siftedDict[key] = dataSource[key]
-    return siftedDict
-
 if __name__ == '__main__':
     extractedData = extractData(filepath)
-    pprint.pprint(extractedData[1]["Subject"])
-    scheduleA = findScheduleType("A", extractedData)
-    print(scheduleA)
+    pprint.pprint(extractedData)
