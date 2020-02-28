@@ -45,13 +45,7 @@ calendar_id = result['items'][0]['id']
 
 print(calendar_id)
 
-def createEvent(summary, location, description, startStr, endStr, timezone):
-    matchesStart = list(datefinder.find_dates(startStr))
-    for match in matchesStart:
-        startTime = matchesStart[0].strftime("%Y-%m-%dT%H:%M:%S")
-    matchesEnd = list(datefinder.find_dates(endStr))
-    for match in matchesEnd:
-        endTime = matchesEnd[0].strftime("%Y-%m-%dT%H:%M:%S") 
+def createEvent(summary, location, description, startTime, endTime, timezone):
     event = {         
         'summary': summary,
         'location': location,
@@ -71,29 +65,44 @@ def createEvent(summary, location, description, startStr, endStr, timezone):
 
     service.events().insert(calendarId='primary', body=event,sendNotifications=True).execute()
 
-def extractSchedDetails(schedType: str, period: int, value: str):
-    print("test")
-    return csv_reader.extractedData[schedType][period][value]
-
 possibleSchedTypes = ["A", "B", "C", "D", "E", "F", "G"]
+
+extractedSched = csv_reader.extractedData
 
 if __name__ == '__main__':
     print("attempt to create")
-    startDate = datetime.date(2020,3,2)
+    startDate = datetime.datetime.strptime("3/2/2020", '%m/%d/%Y').date()
     startSchedType = 2
     duration = 5 
     # endDate = startDate + datetime.timedelta(days=duration)
     dateOnLoop = startDate
+    schedKeyOnLoop = startSchedType
     for _ in range(duration):
-        scheduleOnLoop = possibleSchedTypes[startSchedType]
-        fullDateInfo = str(dateOnLoop) + " 1:33 PM"
-        startDate = datetime.datetime.strptime(fullDateInfo, '%Y-%d-%m %I:%M %p')
-        print(startDate)
+        schedOnLoop = possibleSchedTypes[schedKeyOnLoop]
+
+        for period in extractedSched[schedOnLoop]:
+            print(period)
+            # For each period in each schedule type
+            timeStart = extractedSched[schedOnLoop][period]["Start Time"]
+            timeEnd = extractedSched[schedOnLoop][period]["End Time"]
+            summary = extractedSched[schedOnLoop][period]["Summary"]
+            location = extractedSched[schedOnLoop][period]["Location"]
+            description = extractedSched[schedOnLoop][period]["Description"]
+
+            strStartDate = str(dateOnLoop) + timeStart
+            strEndDate = str(dateOnLoop) + timeEnd
+            startDate = datetime.datetime.strptime(strStartDate, '%Y-%m-%d%I:%M %p').isoformat()
+            endDate = datetime.datetime.strptime(strEndDate, '%Y-%m-%d%I:%M %p').isoformat()
+            print(summary)
+            print(location)
+            print(startDate)
+            print(endDate)
+            createEvent(summary, location, description, startDate, endDate, "America/New_York")
+
         dateOnLoop = dateOnLoop + datetime.timedelta(days=1)
 
-        if startSchedType < 6:
-            startSchedType = startSchedType + 1
+        if schedKeyOnLoop < 6:
+            schedKeyOnLoop = schedKeyOnLoop + 1
         else:
-            startSchedType = 0
-    # createEvent("Test using CreateFunction Method", "S101", "A quick test", "28 Feb 07.00PM", "28 Feb 08.00PM", "America/New_York")
-    print(extractSchedDetails("C",2,"End Time"))
+            schedKeyOnLoop = 0
+    print("Created events")
