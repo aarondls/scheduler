@@ -5,6 +5,7 @@ from googleapiclient.discovery import build
 from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
 import datefinder
+import csv_reader
 
 # to grant read/write access to Calendars
 scopes = ['https://www.googleapis.com/auth/calendar']
@@ -70,6 +71,29 @@ def createEvent(summary, location, description, startStr, endStr, timezone):
 
     service.events().insert(calendarId='primary', body=event,sendNotifications=True).execute()
 
+def extractSchedDetails(schedType: str, period: int, value: str):
+    print("test")
+    return csv_reader.extractedData[schedType][period][value]
+
+possibleSchedTypes = ["A", "B", "C", "D", "E", "F", "G"]
+
 if __name__ == '__main__':
     print("attempt to create")
-    createEvent("Test using CreateFunction Method", "S101", "A quick test", "15 Feb 07.00PM", "15 Feb 08.00PM", "America/New_York")
+    startDate = datetime.date(2020,3,2)
+    startSchedType = 2
+    duration = 5 
+    # endDate = startDate + datetime.timedelta(days=duration)
+    dateOnLoop = startDate
+    for _ in range(duration):
+        scheduleOnLoop = possibleSchedTypes[startSchedType]
+        fullDateInfo = str(dateOnLoop) + " 1:33 PM"
+        startDate = datetime.datetime.strptime(fullDateInfo, '%Y-%d-%m %I:%M %p')
+        print(startDate)
+        dateOnLoop = dateOnLoop + datetime.timedelta(days=1)
+
+        if startSchedType < 6:
+            startSchedType = startSchedType + 1
+        else:
+            startSchedType = 0
+    # createEvent("Test using CreateFunction Method", "S101", "A quick test", "28 Feb 07.00PM", "28 Feb 08.00PM", "America/New_York")
+    print(extractSchedDetails("C",2,"End Time"))

@@ -21,6 +21,7 @@ def extractData(filepath):
 
     return nestedDict
 
+extractedData = extractData(filepath)
+
 if __name__ == '__main__':
-    extractedData = extractData(filepath)
-    pprint.pprint(extractedData)
+    pprint.pprint(extractedData["G"][1]["End Time"])
