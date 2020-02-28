@@ -12,6 +12,12 @@ scopes = ['https://www.googleapis.com/auth/calendar']
 
 credentials = None
 
+possibleSchedTypes = ["A", "B", "C", "D", "E", "F", "G"]
+
+extractedSched = csv_reader.extractedData
+
+defaultTimeZone = "America/New_York"
+
 try:
     with open('token.pickle', 'rb') as token:
         credentials = pickle.load(token)
@@ -65,18 +71,18 @@ def createEvent(summary, location, description, startTime, endTime, timezone):
 
     service.events().insert(calendarId='primary', body=event,sendNotifications=True).execute()
 
-possibleSchedTypes = ["A", "B", "C", "D", "E", "F", "G"]
-
-extractedSched = csv_reader.extractedData
-
 if __name__ == '__main__':
-    print("attempt to create")
-    startDate = datetime.datetime.strptime("3/2/2020", '%m/%d/%Y').date()
-    startSchedType = 2
-    duration = 5 
-    # endDate = startDate + datetime.timedelta(days=duration)
+    print("Attempting to create")
+    try: 
+        startDate = datetime.datetime.strptime(input("What is the starting date in m/d/yyyy?"), '%m/%d/%Y').date()
+        startSchedType = int(input("What is the starting schedule type (as a number, ie 2)?"))
+        duration = int(input("How long will this schedule last in days (as a number, ie 5)?")) 
+    except:
+        print("Cannot understand format")
+
     dateOnLoop = startDate
     schedKeyOnLoop = startSchedType
+    
     for _ in range(duration):
         schedOnLoop = possibleSchedTypes[schedKeyOnLoop]
 
@@ -97,7 +103,7 @@ if __name__ == '__main__':
             print(location)
             print(startDate)
             print(endDate)
-            createEvent(summary, location, description, startDate, endDate, "America/New_York")
+            createEvent(summary, location, description, startDate, endDate, defaultTimeZone)
 
         dateOnLoop = dateOnLoop + datetime.timedelta(days=1)
 
