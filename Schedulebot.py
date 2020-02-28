@@ -74,15 +74,12 @@ def createEvent(summary, location, description, startTime, endTime, timezone):
 if __name__ == '__main__':
     print("Attempting to create")
     try: 
-        startDate = datetime.datetime.strptime(input("What is the starting date in m/d/yyyy?"), '%m/%d/%Y').date()
-        startSchedType = int(input("What is the starting schedule type (as a number, ie 2)?"))
+        dateOnLoop = datetime.datetime.strptime(input("What is the starting date in m/d/yyyy?"), '%m/%d/%Y').date()
+        schedKeyOnLoop = int(input("What is the starting schedule type (as a number, ie 2)?"))
         duration = int(input("How long will this schedule last in days (as a number, ie 5)?")) 
     except:
         print("Cannot understand format")
 
-    dateOnLoop = startDate
-    schedKeyOnLoop = startSchedType
-    
     for _ in range(duration):
         schedOnLoop = possibleSchedTypes[schedKeyOnLoop]
 
@@ -111,4 +108,5 @@ if __name__ == '__main__':
             schedKeyOnLoop = schedKeyOnLoop + 1
         else:
             schedKeyOnLoop = 0
+    
     print("Created events")
