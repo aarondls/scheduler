@@ -51,8 +51,6 @@ for event in events:
 result = service.calendarList().list().execute()
 calendar_id = result['items'][0]['id']
 
-print(calendar_id)
-
 def createEvent(summary, location, description, startTime, endTime, timezone):
     event = {         
         'summary': summary,
@@ -74,7 +72,7 @@ def createEvent(summary, location, description, startTime, endTime, timezone):
     service.events().insert(calendarId='primary', body=event,sendNotifications=True).execute()
 
 if __name__ == '__main__':
-    print("Attempting to create")
+    print("Attempting to create events.")
     try: 
         dateOnLoop = datetime.datetime.strptime(input("What is the starting date in m/d/yyyy?\n"), '%m/%d/%Y').date()
         strSchedStart = input("What is the starting schedule type (as defined in csv file, ie A)?\n")
