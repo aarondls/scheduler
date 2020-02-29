@@ -1,11 +1,13 @@
+from sys import exit
 import datetime
 import pickle
 import os.path
 from googleapiclient.discovery import build
 from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
-import datefinder
 import csv_reader
+from itertools import cycle, islice
+from pprint import pprint
 
 # to grant read/write access to Calendars
 scopes = ['https://www.googleapis.com/auth/calendar']
@@ -74,15 +76,20 @@ def createEvent(summary, location, description, startTime, endTime, timezone):
 if __name__ == '__main__':
     print("Attempting to create")
     try: 
-        dateOnLoop = datetime.datetime.strptime(input("What is the starting date in m/d/yyyy?"), '%m/%d/%Y').date()
-        schedKeyOnLoop = int(input("What is the starting schedule type (as a number, ie 2)?"))
-        duration = int(input("How long will this schedule last in days (as a number, ie 5)?")) 
+        dateOnLoop = datetime.datetime.strptime(input("What is the starting date in m/d/yyyy?\n"), '%m/%d/%Y').date()
+        strSchedStart = input("What is the starting schedule type (as defined in csv file, ie A)?\n")
+        if strSchedStart not in possibleSchedTypes:
+            raise Exception("Schedule type not recognized")
+        duration = int(input("How long will this schedule last in days (as a number, ie 5)?\n")) 
     except:
         print("Cannot understand format")
+        raise
+    
+    schedKey = possibleSchedTypes.index(strSchedStart)
+    desiredSched = list(islice(cycle(possibleSchedTypes), schedKey, schedKey+duration))
+    eventsCreated = []
 
-    for _ in range(duration):
-        schedOnLoop = possibleSchedTypes[schedKeyOnLoop]
-
+    for schedOnLoop in desiredSched:
         for period in extractedSched[schedOnLoop]:
             print(period)
             # For each period in each schedule type
@@ -100,13 +107,11 @@ if __name__ == '__main__':
             print(location)
             print(startDate)
             print(endDate)
-            createEvent(summary, location, description, startDate, endDate, defaultTimeZone)
-
+            eventsCreated.append(summary)
+            # createEvent(summary, location, description, startDate, endDate, defaultTimeZone)
         dateOnLoop = dateOnLoop + datetime.timedelta(days=1)
-
-        if schedKeyOnLoop < 6:
-            schedKeyOnLoop = schedKeyOnLoop + 1
-        else:
-            schedKeyOnLoop = 0
     
-    print("Created events")
+    print("In total, I created", len(eventsCreated), "events over", duration, "days.")
+    if input("Do you want to see a complete list of the events?\ny/n ") == "Y" or "y":
+        print("Here is a list of the events I created:")
+        pprint(eventsCreated)
