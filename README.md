@@ -25,7 +25,24 @@ pip install google-api-python-client
 ## Setting up Scheduler
 The CSV file can be prepared with a spreadwith with the required columns of "Start Time", "End Time", and "Description". Other columns can be added, and will be referred to by its set name.
 
+Modify the string *filepath* in csv_reader.py with the file path of the CSV file. Modify the list *possibleSchedTypes* with the names of the schedule types as labelled in the CSV file.
 
+```python
+filepath = "/filepath/here/file.csv"
+possibleSchedTypes = ("A", "B", "C", "D", "E", "F", "G")
+```
+Modify the *credentialFile* variable in the Load.py file with the filepath of the generated Google Calendar credentials file,
+
+```python
+credentialFile = "/filepath/here/client_secret.json"
+```
+then run the Load.py file once to generate a pickle file.
+
+Modify the list *possibleSchedTypes* in the schedulebot.py file with the names of the schedule types as labelled in the CSV file.
+
+```python
+possibleSchedTypes = ("A", "B", "C", "D", "E", "F", "G")
+```
 
 ## Usage
 Once everything is set-up, simply run schedulebot.py
