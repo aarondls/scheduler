@@ -1,15 +1,24 @@
+from sys import exit
 import datetime
 import pickle
 import os.path
 from googleapiclient.discovery import build
 from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
-import datefinder
+import csv_reader
+from itertools import cycle, islice
+from pprint import pprint
 
 # to grant read/write access to Calendars
 scopes = ['https://www.googleapis.com/auth/calendar']
 
 credentials = None
+
+possibleSchedTypes = ["A", "B", "C", "D", "E", "F", "G"]
+
+extractedSched = csv_reader.extractedData
+
+defaultTimeZone = "America/New_York"
 
 try:
     with open('token.pickle', 'rb') as token:
@@ -44,13 +53,7 @@ calendar_id = result['items'][0]['id']
 
 print(calendar_id)
 
-def createEvent(summary, location, description, startStr, endStr, timezone):
-    matchesStart = list(datefinder.find_dates(startStr))
-    for match in matchesStart:
-        startTime = matchesStart[0].strftime("%Y-%m-%dT%H:%M:%S")
-    matchesEnd = list(datefinder.find_dates(endStr))
-    for match in matchesEnd:
-        endTime = matchesEnd[0].strftime("%Y-%m-%dT%H:%M:%S") 
+def createEvent(summary, location, description, startTime, endTime, timezone):
     event = {         
         'summary': summary,
         'location': location,
@@ -71,5 +74,44 @@ def createEvent(summary, location, description, startStr, endStr, timezone):
     service.events().insert(calendarId='primary', body=event,sendNotifications=True).execute()
 
 if __name__ == '__main__':
-    print("attempt to create")
-    createEvent("Test using CreateFunction Method", "S101", "A quick test", "15 Feb 07.00PM", "15 Feb 08.00PM", "America/New_York")
+    print("Attempting to create")
+    try: 
+        dateOnLoop = datetime.datetime.strptime(input("What is the starting date in m/d/yyyy?\n"), '%m/%d/%Y').date()
+        strSchedStart = input("What is the starting schedule type (as defined in csv file, ie A)?\n")
+        if strSchedStart not in possibleSchedTypes:
+            raise Exception("Schedule type not recognized")
+        duration = int(input("How long will this schedule last in days (as a number, ie 5)?\n")) 
+    except:
+        print("Cannot understand format")
+        raise
+    
+    schedKey = possibleSchedTypes.index(strSchedStart)
+    desiredSched = list(islice(cycle(possibleSchedTypes), schedKey, schedKey+duration))
+    eventsCreated = []
+
+    for schedOnLoop in desiredSched:
+        for period in extractedSched[schedOnLoop]:
+            print(period)
+            # For each period in each schedule type
+            timeStart = extractedSched[schedOnLoop][period]["Start Time"]
+            timeEnd = extractedSched[schedOnLoop][period]["End Time"]
+            summary = extractedSched[schedOnLoop][period]["Summary"]
+            location = extractedSched[schedOnLoop][period]["Location"]
+            description = extractedSched[schedOnLoop][period]["Description"]
+
+            strStartDate = str(dateOnLoop) + timeStart
+            strEndDate = str(dateOnLoop) + timeEnd
+            startDate = datetime.datetime.strptime(strStartDate, '%Y-%m-%d%I:%M %p').isoformat()
+            endDate = datetime.datetime.strptime(strEndDate, '%Y-%m-%d%I:%M %p').isoformat()
+            print(summary)
+            print(location)
+            print(startDate)
+            print(endDate)
+            eventsCreated.append(summary)
+            # createEvent(summary, location, description, startDate, endDate, defaultTimeZone)
+        dateOnLoop = dateOnLoop + datetime.timedelta(days=1)
+    
+    print("In total, I created", len(eventsCreated), "events over", duration, "days.")
+    if input("Do you want to see a complete list of the events?\ny/n ") == "Y" or "y":
+        print("Here is a list of the events I created:")
+        pprint(eventsCreated)
