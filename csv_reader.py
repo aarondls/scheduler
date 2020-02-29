@@ -24,5 +24,4 @@ def extractData(filepath):
 extractedData = extractData(filepath)
 
 if __name__ == '__main__':
-    pprint.pprint(extractedData["G"][1]["End Time"])
     pprint.pprint(extractedData)
