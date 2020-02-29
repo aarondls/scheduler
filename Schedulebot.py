@@ -106,7 +106,7 @@ if __name__ == '__main__':
             print(startDate)
             print(endDate)
             eventsCreated.append(summary)
-            # createEvent(summary, location, description, startDate, endDate, defaultTimeZone)
+            createEvent(summary, location, description, startDate, endDate, defaultTimeZone)
         dateOnLoop = dateOnLoop + datetime.timedelta(days=1)
     
     print("In total, I created", len(eventsCreated), "events over", duration, "days.")
