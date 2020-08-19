@@ -1,24 +1,32 @@
 import csv
 import pprint
 
-filepath = "/Users/aarondelossantos/Desktop/Course Syllabus and Schedule/Full Schedule.csv"
-possibleSchedTypes = ("A", "B", "C", "D", "E", "F", "G")
+#filepath = "/Users/aarondelossantos/Documents/Schedules/Fall 2020.csv"
+filepath = "/Users/aarondelossantos/Desktop/Course Syllabus and Schedule/Reserve Schedule.csv"
+
+# A to Z type of schedule
+possibleSchedTypes = ["A", "B", "C", "D", "E", "F", "G"]
+
+# M to F type of schedule
+# possibleSchedTypes = ["M", "T", "W", "R", "F"]
 
 def extractData(filepath):
-    print("processing")
+    print("Extracting events from CSV file")
 
-    csvReader = csv.DictReader(open(filepath,mode='r', encoding='utf-8-sig'))
+    try:
+        csvReader = csv.DictReader(open(filepath,mode='r', encoding='utf-8-sig'))
 
-    nestedDict = {}
-    print("preparing nested dict")
+        nestedDict = {}
 
-    for schedType in possibleSchedTypes:
-        nestedDict[schedType] = {}
-
-    for counter, row in enumerate(csvReader):
-        counter = len(nestedDict[dict(row)["Schedule type"]])
-        nestedDict[dict(row)["Schedule type"]][counter] = dict(row)
-
+        for schedType in possibleSchedTypes:
+            nestedDict[schedType] = {}
+        
+        for counter, row in enumerate(csvReader):
+            counter = len(nestedDict[dict(row)["Schedule type"]])
+            nestedDict[dict(row)["Schedule type"]][counter] = dict(row)
+    except:
+        print("Unable to import events")
+        raise
     return nestedDict
 
 extractedData = extractData(filepath)
