@@ -118,8 +118,8 @@ if __name__ == '__main__':
             print(startDate)
             print(endDate)
             eventsCreated.append(summary)
+            foundCalendarID = 'primary'
             if separateEventsByCalendar:
-                foundCalendarID = 'primary'
                 for calendarListEntry in calendarList:
                     if calendarListEntry['summary'] == summary:
                         foundCalendarID = calendarListEntry['id']
