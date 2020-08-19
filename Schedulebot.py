@@ -50,10 +50,10 @@ for event in events:
     start = event['start'].get('dateTime', event['start'].get('date'))
     print(start, event['summary'])
 
-result = service.calendarList().list().execute()
-calendar_id = result['items'][0]['id']
+calendarList = service.calendarList().list().execute()['items']
+calendar_id = calendarList[0]['id']
 
-def createEvent(summary, location, description, startTime, endTime, timezone):
+def createEvent(summary, location, description, startTime, endTime, timezone, givenCalendarID):
     event = {         
         'summary': summary,
         'location': location,
@@ -71,7 +71,7 @@ def createEvent(summary, location, description, startTime, endTime, timezone):
         },
     }
 
-    service.events().insert(calendarId='primary', body=event,sendNotifications=True).execute()
+    service.events().insert(calendarId=givenCalendarID, body=event,sendNotifications=True).execute()
 
 if __name__ == '__main__':
     print("Attempting to create events.")
@@ -87,6 +87,10 @@ if __name__ == '__main__':
             skipWeekends = True
         else:
             skipWeekends = False
+        if input("Should the events be added to the calendar of the same name? If no, events will be added to main calendar. \ny/n ") in ["Y", "y", "Yes", "yes"]:
+            separateEventsByCalendar = True
+        else:
+            separateEventsByCalendar = False
     except:
         print("Cannot understand format")
         raise
@@ -114,7 +118,13 @@ if __name__ == '__main__':
             print(startDate)
             print(endDate)
             eventsCreated.append(summary)
-            createEvent(summary, location, description, startDate, endDate, defaultTimeZone)
+            if separateEventsByCalendar:
+                foundCalendarID = 'primary'
+                for calendarListEntry in calendarList:
+                    if calendarListEntry['summary'] == summary:
+                        foundCalendarID = calendarListEntry['id']
+                        break
+            createEvent(summary, location, description, startDate, endDate, defaultTimeZone, foundCalendarID)
         if skipWeekends and dateOnLoop.weekday() == 4:
             dateOnLoop = dateOnLoop + datetime.timedelta(days=3)
         else:
