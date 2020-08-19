@@ -1,8 +1,13 @@
 import csv
 import pprint
 
-filepath = "/Users/aarondelossantos/Desktop/Course Syllabus and Schedule/Full Schedule.csv"
-possibleSchedTypes = ("A", "B", "C", "D", "E", "F", "G")
+filepath = "/Users/aarondelossantos/Documents/Schedules/Fall 2020.csv"
+
+# A to Z type of schedule
+# possibleSchedTypes = ("A", "B", "C", "D", "E", "F", "G")
+
+# M to F type of schedule
+possibleSchedTypes = ("M", "T", "W", "R", "F")
 
 def extractData(filepath):
     print("Extracting events from CSV file")
@@ -14,7 +19,7 @@ def extractData(filepath):
 
         for schedType in possibleSchedTypes:
             nestedDict[schedType] = {}
-
+        
         for counter, row in enumerate(csvReader):
             counter = len(nestedDict[dict(row)["Schedule type"]])
             nestedDict[dict(row)["Schedule type"]][counter] = dict(row)
