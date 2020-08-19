@@ -22,6 +22,8 @@ possibleSchedTypes = ["M", "T", "W", "R", "F"]
 
 extractedSched = csv_reader.extractedData
 
+# set default timezone 
+# eg, my classes are at CST, while I am at PDT
 defaultTimeZone = "America/Chicago"
 
 try:
@@ -79,7 +81,9 @@ if __name__ == '__main__':
     print("Attempting to create events.")
     try: 
         dateOnLoop = datetime.datetime.strptime(input("What is the starting date in m/d/yyyy?\n"), '%m/%d/%Y').date()
-        strSchedStart = input("What is the starting schedule type (as defined in csv file, ie A)?\n")
+        print("What is the starting schedule type?\nPossible schedules: ", end="")
+        print(*possibleSchedTypes, sep = ", ")
+        strSchedStart = input()
         if strSchedStart not in possibleSchedTypes:
             raise Exception("Schedule type not recognized")
         duration = int(input("How long will this schedule last in days (as a number, ie 5)?\n")) 
