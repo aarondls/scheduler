@@ -14,11 +14,15 @@ scopes = ['https://www.googleapis.com/auth/calendar']
 
 credentials = None
 
-possibleSchedTypes = ["A", "B", "C", "D", "E", "F", "G"]
+# A to Z type of schedule
+# possibleSchedTypes = ["A", "B", "C", "D", "E", "F", "G"]
+
+# M to F type of schedule
+possibleSchedTypes = ["M", "T", "W", "R", "F"]
 
 extractedSched = csv_reader.extractedData
 
-defaultTimeZone = "America/New_York"
+defaultTimeZone = "America/Chicago"
 
 try:
     with open('token.pickle', 'rb') as token:
@@ -79,6 +83,10 @@ if __name__ == '__main__':
         if strSchedStart not in possibleSchedTypes:
             raise Exception("Schedule type not recognized")
         duration = int(input("How long will this schedule last in days (as a number, ie 5)?\n")) 
+        if input("Does the schedule skip weekends?\ny/n ") in ["Y", "y", "Yes", "yes"]:
+            skipWeekends = True
+        else:
+            skipWeekends = False
     except:
         print("Cannot understand format")
         raise
@@ -107,9 +115,12 @@ if __name__ == '__main__':
             print(endDate)
             eventsCreated.append(summary)
             createEvent(summary, location, description, startDate, endDate, defaultTimeZone)
-        dateOnLoop = dateOnLoop + datetime.timedelta(days=1)
+        if skipWeekends and dateOnLoop.weekday() == 4:
+            dateOnLoop = dateOnLoop + datetime.timedelta(days=3)
+        else:
+            dateOnLoop = dateOnLoop + datetime.timedelta(days=1)
     
     print("In total, I created", len(eventsCreated), "events over", duration, "days.")
-    if input("Do you want to see a complete list of the events?\ny/n ") == "Y" or "y":
+    if input("Do you want to see a complete list of the events?\ny/n ") in ["Y", "y", "Yes", "yes"]:
         print("Here is a list of the events I created:")
         pprint(eventsCreated)
