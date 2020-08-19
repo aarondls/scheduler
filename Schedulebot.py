@@ -14,11 +14,7 @@ scopes = ['https://www.googleapis.com/auth/calendar']
 
 credentials = None
 
-# A to Z type of schedule
-# possibleSchedTypes = ["A", "B", "C", "D", "E", "F", "G"]
-
-# M to F type of schedule
-possibleSchedTypes = ["M", "T", "W", "R", "F"]
+possibleSchedTypes = csv_reader.possibleSchedTypes
 
 extractedSched = csv_reader.extractedData
 
