@@ -52,14 +52,12 @@ This way, each event can have its own color, timezone, and other details. The cr
 
 Since each calendar can have different colors, it is easy to identify each event with just a glance. With Google Calendar being synced with other devices, the schedule can be viewed on multiple devices, such as on the native Mac and iOS calendar app.
 
-Mac
-
+### Mac
 <p align="center">
   <img src="https://github.com/aarondls/scheduler/blob/master/Images/UIUC_schedule_on_Mac.png" width="900">
 </p>
 
-iPhone
-
+### iPhone
 <p align="center">
   <img src="https://github.com/aarondls/scheduler/blob/master/Images/UIUC_schedule_on_iOS.jpeg" width="500">
 </p>
