@@ -13,7 +13,7 @@ With Scheduler, any schedule can be easily matched with the right dates, uploade
 For example, take this 7-day schedule of A,B,C,D,E,F,G that rotates on weekdays and skips weekends.
 
 <p align="center">
-  <img src="https://github.com/aarondls/scheduler/blob/master/Images/Reserve_schedule.png" width="550">
+  <img src="https://github.com/aarondls/scheduler/blob/master/Images/Reserve_schedule.png" width="700">
 </p>
 
 With this CSV file, Scheduler can gather the necessary information for each event and schedule type. Scheduler will then ask for when the desired schedule should start, which schedule type to start on, how many days to fill in the schedule, whether the schedule skips weekends, and which calendar the schedule should be uploaded to. In this example, it is uploaded to the primary (default) calendar.
@@ -25,39 +25,43 @@ With this CSV file, Scheduler can gather the necessary information for each even
 Scheduler automatically recognizes when the cycle ends, and goes back to the first schedule type until all days have been filled with the proper schedule type. Scheduler will also skip weekends if told to do so. The created events on Google Calendar is then:
 
 <p align="center">
-  <img src="https://github.com/aarondls/scheduler/blob/master/Images/Reserve_schedule_created_1.png" width="900">
+  <img src="https://github.com/aarondls/scheduler/blob/master/Images/Reserve_schedule_created_1.png" width="800">
 </p>
 
 <p align="center">
-  <img src="https://github.com/aarondls/scheduler/blob/master/Images/Reserve_schedule_created_2.png" width="900">
+  <img src="https://github.com/aarondls/scheduler/blob/master/Images/Reserve_schedule_created_2.png" width="800">
 </p>
 
 Scheduler can also upload events into separate calendars of the same name. For example, take this regular Monday to Friday (M,T,W,R,F) schedule.
 
 <p align="center">
-  <img src="https://github.com/aarondls/scheduler/blob/master/Images/UIUC_schedule.png" width="900">
+  <img src="https://github.com/aarondls/scheduler/blob/master/Images/UIUC_schedule.png" width="700">
 </p>
 
 This time, there are calendars named after each event, and the events should be added its corresponding calendar. For example, a calendar named "Introduction to Computing" exists, and the event "Introduction to Computing" should be uploaded to that calendar.
 
 <p align="center">
-  <img src="https://github.com/aarondls/scheduler/blob/master/Images/schedulebot_with_separated_calendars.gif" width="900">
+  <img src="https://github.com/aarondls/scheduler/blob/master/Images/schedulebot_with_separated_calendars.gif" width="500">
 </p>
 
 This way, each event can have its own color, timezone, and other details. The created events on Google Calendar is then:
 
 <p align="center">
-  <img src="https://github.com/aarondls/scheduler/blob/master/Images/UIUC_schedule_created.png" width="900">
+  <img src="https://github.com/aarondls/scheduler/blob/master/Images/UIUC_schedule_created.png" width="800">
 </p>
 
 Since each calendar can have different colors, it is easy to identify each event with just a glance. With Google Calendar being synced with other devices, the schedule can be viewed on multiple devices, such as on the native Mac and iOS calendar app.
+
+Mac
 
 <p align="center">
   <img src="https://github.com/aarondls/scheduler/blob/master/Images/UIUC_schedule_on_Mac.png" width="900">
 </p>
 
+iPhone
+
 <p align="center">
-  <img src="https://github.com/aarondls/scheduler/blob/master/Images/UIUC_schedule_on_iOS.jpeg" width="900">
+  <img src="https://github.com/aarondls/scheduler/blob/master/Images/UIUC_schedule_on_iOS.jpeg" width="500">
 </p>
 
 ## Dependencies
