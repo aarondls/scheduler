@@ -52,7 +52,13 @@ This way, each event can have its own color, timezone, and other details. The cr
 
 Since each calendar can have different colors, it is easy to identify each event with just a glance. With Google Calendar being synced with other devices, the schedule can be viewed on multiple devices, such as on the native Mac and iOS calendar app.
 
+<p align="center">
+  <img src="https://github.com/aarondls/scheduler/blob/master/Images/UIUC_schedule_on_Mac.png" width="900">
+</p>
 
+<p align="center">
+  <img src="https://github.com/aarondls/scheduler/blob/master/Images/UIUC_schedule_on_iOS.jpeg" width="900">
+</p>
 
 ## Dependencies
 
@@ -64,7 +70,9 @@ pip install google-api-python-client
 
 The CSV file can be prepared from a spreadsheet with the required columns of "Start Time", "End Time", and "Description". Other columns can be added, and will be referred to by its set name.
 
-*insert spreadsheet image*
+<p align="center">
+  <img src="https://github.com/aarondls/scheduler/blob/master/Images/Reserve_schedule_excel.png" width="900">
+</p>
 
 The Excel sheet above can then be saved as a CSV file, then modify the string *filepath* in csv_reader.py with the file path of the CSV file.
 
@@ -120,4 +128,5 @@ Note that if weekends are skipped, then weekends will not count towards the dura
 The last prompt before the events can be created will ask whether the events should be added to calendars sharing the same name. Note that the calendar must exist and have the same name as the events.
 > Should the events be added to the calendar of the same name? If no, events will be added to main calendar.
 > y/n
+
 If the answer is not a yes, then Scheduler will default to the primary calendar. If the answer is yes but there is no calendar that exists with the same name as the event, then Scheduler will again default to the primary calendar.
