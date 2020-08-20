@@ -109,24 +109,43 @@ python schedulebot.py
 ```
 
 Scheduler will first prompt for the starting date of the schedule, in the format m/d/yyyy.
-> What is the starting date in m/d/yyyy?
+
+```
+What is the starting date in m/d/yyyy?
+```
+
 If the provided date is the wrong format or doesn't exist, Scheduler will exit. This applies for every invalid input to prompts.
 
+
 Scheduler will then prompt for the starting schedule type, and will display the possible choices.
-> What is the starting schedule type?
-> Possible schedules: M, T, W, R, F
+```
+What is the starting schedule type?
+Possible schedules: M, T, W, R, F
+```
+
 
 The next prompt will ask for how long the schedule would last in days.
-> How long will this schedule last in days (as a number, ie 5)?
+
+```
+How long will this schedule last in days (as a number, ie 5)?
 There is no limit to how long you can enter, so please do not enter an excessively long duration.
+```
+
 
 Scheduler will then ask if it should skip weekends and move the schedule after Friday to Monday. 'y', 'Y', 'Yes', and 'yes' are acceptable answers. If the answer is none of the above choices, then Scheduler will assume it is a no.
-> Does the schedule skip weekends?
-> y/n
+
+```
+Does the schedule skip weekends?
+y/n
+```
 Note that if weekends are skipped, then weekends will not count towards the duration entered in the previous prompt.
 
+
 The last prompt before the events can be created will ask whether the events should be added to calendars sharing the same name. Note that the calendar must exist and have the same name as the events.
-> Should the events be added to the calendar of the same name? If no, events will be added to main calendar.
-> y/n
+
+```
+Should the events be added to the calendar of the same name? If no, events will be added to main calendar.
+y/n
+```
 
 If the answer is not a yes, then Scheduler will default to the primary calendar. If the answer is yes but there is no calendar that exists with the same name as the event, then Scheduler will again default to the primary calendar.
